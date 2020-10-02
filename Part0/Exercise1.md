@@ -98,5 +98,5 @@ This exercise is not submitted to GitHub, it's enough to just read the tutorial
 
   - Headings (`<h1> - <h6>`)
   - Paragraphs (`<p>`)
-  - Lists (`<ul>` or `<ol>`, with ``<li>`)
+  - Lists (`<ul>` or `<ol>`, with `<li>`)
   - Links (`<a href="link">`)
