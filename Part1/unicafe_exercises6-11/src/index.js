@@ -14,22 +14,31 @@ const Button = ({ text, handleClick }) => (
 
 const Statistics = ({ statistics, hasFeedback }) =>
   hasFeedback ? (
-    statistics.map((statistic, index) => (
-      <Statistic
-        key={index}
-        text={statistic.text}
-        value={statistic.value}
-        isPercent={statistic.isPercent}
-      />
-    ))
+    <tbody>
+      {statistics.map((statistic, index) => (
+        <Statistic
+          key={index}
+          text={statistic.text}
+          value={statistic.value}
+          isPercent={statistic.isPercent}
+        />
+      ))}
+    </tbody>
   ) : (
-    <p>No feedback has been given.</p>
+    <tbody>
+      <tr>
+        <td>No feedback has been given.</td>
+      </tr>
+    </tbody>
   );
 
 const Statistic = ({ text, value, isPercent }) => (
-  <p>
-    {text} {value.toString()} {isPercent && "%"}
-  </p>
+  <tr>
+    <td>{text}</td>
+    <td>
+      {value.toString()} {isPercent && "%"}
+    </td>
+  </tr>
 );
 
 const App = () => {
@@ -62,7 +71,9 @@ const App = () => {
       <Header title="Give Feedback!" />
       <Options options={feedbackOptions} />
       <Header title="Statistics:" />
-      <Statistics statistics={statistics} hasFeedback={total !== 0} />
+      <table>
+        <Statistics statistics={statistics} hasFeedback={total !== 0} />
+      </table>
     </div>
   );
 };
