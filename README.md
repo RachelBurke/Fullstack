@@ -5,7 +5,7 @@ Fullstack development course from https://fullstackopen.com/en/
 ## Lesson 0
 
 - [Notes](/Part0/Notes.md)
-- [Assignments](/Part0)
+- [Assignment Descriptions](/Part0)
   - [Exercise 1](/Part0/Exercise1.md)
   - [Exercise 2](/Part0/Exercise2.md)
   - [Exercise 3](/Part0/Exercise3.md)
@@ -16,13 +16,16 @@ Fullstack development course from https://fullstackopen.com/en/
 ## Lesson 1
 
 - [Notes](/Part1/Notes.md)
-- [Assignments](/Part1)
+- Code
+  - [Exercise 1.1-1.5 Code](/Part1/exercises1-5)
+  - [Exercise 1.6-1.11 Code](/Part1/unicafe_exercises6-11)
+  - [Exercise 1.12-1.14 Code](/Part1/anecdotes_exercises12-14)
+- [Assignment Descriptions](/Part1)
   - [Exercise 1.1](/Part1/Exercise_Descriptions/Exercise1.1.md)
   - [Exercise 1.2](/Part1/Exercise_Descriptions/Exercise1.2.md)
   - [Exercise 1.3](/Part1/Exercise_Descriptions/Exercise1.3.md)
   - [Exercise 1.4](/Part1/Exercise_Descriptions/Exercise1.4.md)
   - [Exercise 1.5](/Part1/Exercise_Descriptions/Exercise1.5.md)
-  - [Exercise 1.1-1.5 Code](/Part1/exercises1-5)
   - [Exercise 1.6](/Part1/Exercise_Descriptions/Exercise1.6.md)
   - [Exercise 1.7](/Part1/Exercise_Descriptions/Exercise1.7.md)
   - [Exercise 1.8](/Part1/Exercise_Descriptions/Exercise1.8.md)
