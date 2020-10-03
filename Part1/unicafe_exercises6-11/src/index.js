@@ -7,9 +7,9 @@ const Button = ({ title, handleClick }) => (
   <button onClick={handleClick}>{title}</button>
 );
 
-const Statistic = ({ title, value }) => (
+const Statistic = ({ title, value, isPercent }) => (
   <p>
-    {title} {value.toString()}
+    {title} {value.toString()} {isPercent && "%"}
   </p>
 );
 
@@ -18,6 +18,10 @@ const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
+
+  const total = good + neutral + bad;
+  const average = (good - bad) / total || 0;
+  const positive = (good / total) * 100 || 0;
 
   return (
     <div>
@@ -35,6 +39,9 @@ const App = () => {
         <Statistic title="Good:" value={good} />
         <Statistic title="Neutral:" value={neutral} />
         <Statistic title="Bad:" value={bad} />
+        <Statistic title="Total:" value={total} />
+        <Statistic title="Average:" value={average} />
+        <Statistic title="Positive:" value={positive} isPercent />
       </>
     </div>
   );
