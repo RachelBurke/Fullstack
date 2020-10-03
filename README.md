@@ -4,7 +4,7 @@ Fullstack development course from https://fullstackopen.com/en/
 
 ## Lesson 0
 
-- [Notes](/Part0/Notes.md)
+- [Course Notes](/Part0/Notes.md)
 - Solutions
    - [Exercise 1 Notes](/Part0/Exercise_Descriptions/Exercise1.md#notes)
    - [Exercise 2 Notes](/Part0/Exercise_Descriptions/Exercise2.md#notes)
@@ -12,7 +12,7 @@ Fullstack development course from https://fullstackopen.com/en/
    - [Exercise 4 Diagram](/Part0/Exercise4.PNG)
    - [Exercise 5 Diagram](/Part0/Exercise5.PNG)
    - [Exercise 6 Diagram](/Part0/Exercise6.PNG)
-- [Assignments](/Part0)
+- [Assignment Descriptions](/Part0)
   - [Exercise 1](/Part0/Exercise_Descriptions/Exercise1.md)
   - [Exercise 2](/Part0/Exercise_Descriptions/Exercise2.md)
   - [Exercise 3](/Part0/Exercise_Descriptions/Exercise3.md)
@@ -22,7 +22,7 @@ Fullstack development course from https://fullstackopen.com/en/
 
 ## Lesson 1
 
-- [Notes](/Part1/Notes.md)
+- [Course Notes](/Part1/Notes.md)
 - Solutions
   - [Exercise 1.1-1.5 Code](/Part1/exercises1-5)
   - [Exercise 1.6-1.11 Code](/Part1/unicafe_exercises6-11)
