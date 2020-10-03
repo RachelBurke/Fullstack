@@ -7,15 +7,19 @@ const Button = ({ title, handleClick }) => (
   <button onClick={handleClick}>{title}</button>
 );
 
-const Statistics = ({ statistics }) =>
-  statistics.map((statistic, index) => (
-    <Statistic
-      key={index}
-      title={statistic.title}
-      value={statistic.value}
-      isPercent={statistic.isPercent}
-    />
-  ));
+const Statistics = ({ statistics, hasFeedback }) =>
+  hasFeedback ? (
+    statistics.map((statistic, index) => (
+      <Statistic
+        key={index}
+        title={statistic.title}
+        value={statistic.value}
+        isPercent={statistic.isPercent}
+      />
+    ))
+  ) : (
+    <p>No feedback has been given.</p>
+  );
 
 const Statistic = ({ title, value, isPercent }) => (
   <p>
@@ -54,7 +58,7 @@ const App = () => {
         <Button title="Bad" handleClick={() => setBad((bad) => bad + 1)} />
       </>
       <Header title="Statistics:" />
-      <Statistics statistics={statistics} />
+      <Statistics statistics={statistics} hasFeedback={total != 0} />
     </div>
   );
 };
