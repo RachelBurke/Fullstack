@@ -7,6 +7,16 @@ const Button = ({ title, handleClick }) => (
   <button onClick={handleClick}>{title}</button>
 );
 
+const Statistics = ({ statistics }) =>
+  statistics.map((statistic, index) => (
+    <Statistic
+      key={index}
+      title={statistic.title}
+      value={statistic.value}
+      isPercent={statistic.isPercent}
+    />
+  ));
+
 const Statistic = ({ title, value, isPercent }) => (
   <p>
     {title} {value.toString()} {isPercent && "%"}
@@ -23,6 +33,15 @@ const App = () => {
   const average = (good - bad) / total || 0;
   const positive = (good / total) * 100 || 0;
 
+  const statistics = [
+    { title: "Good", value: good, isPercent: false },
+    { title: "Neutral", value: neutral, isPercent: false },
+    { title: "Bad", value: bad, isPercent: false },
+    { title: "Total", value: total, isPercent: false },
+    { title: "Average", value: average, isPercent: false },
+    { title: "Positive", value: positive, isPercent: true },
+  ];
+
   return (
     <div>
       <Header title="Give Feedback!" />
@@ -35,14 +54,7 @@ const App = () => {
         <Button title="Bad" handleClick={() => setBad((bad) => bad + 1)} />
       </>
       <Header title="Statistics:" />
-      <>
-        <Statistic title="Good:" value={good} />
-        <Statistic title="Neutral:" value={neutral} />
-        <Statistic title="Bad:" value={bad} />
-        <Statistic title="Total:" value={total} />
-        <Statistic title="Average:" value={average} />
-        <Statistic title="Positive:" value={positive} isPercent />
-      </>
+      <Statistics statistics={statistics} />
     </div>
   );
 };
