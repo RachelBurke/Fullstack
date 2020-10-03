@@ -3,8 +3,13 @@ import ReactDOM from "react-dom";
 
 const Header = ({ title }) => <h1>{title}</h1>;
 
-const Button = ({ title, handleClick }) => (
-  <button onClick={handleClick}>{title}</button>
+const Options = ({ options }) =>
+  options.map((option, index) => (
+    <Button key={index} text={option.text} handleClick={option.onChange} />
+  ));
+
+const Button = ({ text, handleClick }) => (
+  <button onClick={handleClick}>{text}</button>
 );
 
 const Statistics = ({ statistics, hasFeedback }) =>
@@ -12,7 +17,7 @@ const Statistics = ({ statistics, hasFeedback }) =>
     statistics.map((statistic, index) => (
       <Statistic
         key={index}
-        title={statistic.title}
+        text={statistic.text}
         value={statistic.value}
         isPercent={statistic.isPercent}
       />
@@ -21,9 +26,9 @@ const Statistics = ({ statistics, hasFeedback }) =>
     <p>No feedback has been given.</p>
   );
 
-const Statistic = ({ title, value, isPercent }) => (
+const Statistic = ({ text, value, isPercent }) => (
   <p>
-    {title} {value.toString()} {isPercent && "%"}
+    {text} {value.toString()} {isPercent && "%"}
   </p>
 );
 
@@ -37,28 +42,27 @@ const App = () => {
   const average = (good - bad) / total || 0;
   const positive = (good / total) * 100 || 0;
 
+  const feedbackOptions = [
+    { text: "Good", onChange: () => setGood((good) => good + 1) },
+    { text: "Neutral", onChange: () => setNeutral((neutral) => neutral + 1) },
+    { text: "Bad", onChange: () => setBad((bad) => bad + 1) },
+  ];
+
   const statistics = [
-    { title: "Good", value: good, isPercent: false },
-    { title: "Neutral", value: neutral, isPercent: false },
-    { title: "Bad", value: bad, isPercent: false },
-    { title: "Total", value: total, isPercent: false },
-    { title: "Average", value: average, isPercent: false },
-    { title: "Positive", value: positive, isPercent: true },
+    { text: "Good", value: good, isPercent: false },
+    { text: "Neutral", value: neutral, isPercent: false },
+    { text: "Bad", value: bad, isPercent: false },
+    { text: "Total", value: total, isPercent: false },
+    { text: "Average", value: average, isPercent: false },
+    { text: "Positive", value: positive, isPercent: true },
   ];
 
   return (
     <div>
       <Header title="Give Feedback!" />
-      <>
-        <Button title="Good" handleClick={() => setGood((good) => good + 1)} />
-        <Button
-          title="Neutral"
-          handleClick={() => setNeutral((neutral) => neutral + 1)}
-        />
-        <Button title="Bad" handleClick={() => setBad((bad) => bad + 1)} />
-      </>
+      <Options options={feedbackOptions} />
       <Header title="Statistics:" />
-      <Statistics statistics={statistics} hasFeedback={total != 0} />
+      <Statistics statistics={statistics} hasFeedback={total !== 0} />
     </div>
   );
 };
