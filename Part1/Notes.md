@@ -378,6 +378,413 @@ janja.greet()
 - [A re-introduction to JavaScript (JS Tutorial)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript)
 - [You-Dont-Know-JS](https://github.com/getify/You-Dont-Know-JS)
 
+# Part 1 C: Component State & Event Handlers
+
+Example:
+
+```
+const Hello = (props) => {
+  return (
+    <div>
+      <p>
+        Hello {props.name}, you are {props.age} years old
+      </p>
+    </div>
+  )
+}
+
+const App = () => {
+  const name = 'Peter'
+  const age = 10
+
+  return (
+    <div>
+      <h1>Greetings</h1>
+      <Hello name="Maya" age={26 + 10} />
+      <Hello name={name} age={age} />
+    </div>
+  )
+}
 ```
 
+## Component Helper Functions
+
+Expand _Hello_ component:
+
+```
+const Hello = (props) => {
+  const bornYear = () => {
+    const yearNow = new Date().getFullYear()
+    return yearNow - props.age
+  }
+
+  return (
+    <div>
+      <p>
+        Hello {props.name}, you are {props.age} years old
+      </p>
+      <p>So you were probably born in {bornYear()}</p>
+    </div>
+  )
+}
+```
+
+- logic for guessing the year of birth is separated into its own function that is called when the component is rendered
+- person's age does not have to be passed as a parameter to the function, since it can directly access all props that are passed to the component
+
+## Destructuring
+
+```
+props = {
+  name: 'Arto Hellas',
+  age: 35,
+}
+
+const Hello = (props) => {
+  const name = props.name
+  const age = props.age
+
+  const bornYear = () => new Date().getFullYear() - age
+
+  return (
+    <div>
+      <p>Hello {name}, you are {age} years old</p>
+      <p>So you were probably born in {bornYear()}</p>
+    </div>
+  )
+}
+```
+
+- ES6 enabled the ability to [destructure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) values from objects and arrays
+
+```
+props = {
+  name: 'Arto Hellas',
+  age: 35,
+}
+
+const Hello = (props) => {
+  const { name, age } = props
+  const bornYear = () => new Date().getFullYear() - age
+
+  return (
+    <div>
+      <p>Hello {name}, you are {age} years old</p>
+      <p>So you were probably born in {bornYear()}</p>
+    </div>
+  )
+}
+```
+
+We can go one step further:
+
+```
+const Hello = ({ name, age }) => {
+  const bornYear = () => new Date().getFullYear() - age
+
+  return (
+    <div>
+      <p>
+        Hello {name}, you are {age} years old
+      </p>
+      <p>So you were probably born in {bornYear()}</p>
+    </div>
+  )
+}
+```
+
+## Page Re-rendering
+
+- need to change things when user interacts with a page
+  - Ex. increase a counter on button click
+
+```
+const App = (props) => {
+  const {counter} = props
+  return (
+    <div>{counter}</div>
+  )
+}
+
+let counter = 1
+
+ReactDOM.render(
+  <App counter={counter} />,
+  document.getElementById('root')
+)
+```
+
+- need to call `ReactDOM.render` a second time
+
+```
+const App = (props) => {
+  const { counter } = props
+  return (
+    <div>{counter}</div>
+  )
+}
+
+let counter = 1
+
+const refresh = () => {
+  ReactDOM.render(<App counter={counter} />,
+  document.getElementById('root'))
+}
+
+refresh()
+counter += 1
+refresh()
+counter += 1
+refresh()
+```
+
+- above happens too fast and is hard to notice
+- changing to below refreshes every second
+
+```
+setInterval(() => {
+  refresh()
+  counter += 1
+}, 1000)
+```
+
+- still not ideal, there are better ways of re-rendering pages
+
+## Stateful Components
+
+- Using React's [state hook](https://reactjs.org/docs/hooks-state.html)
+
+```
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
+
+const App = () => {
+  const [ counter, setCounter ] = useState(0)
+
+  setTimeout(
+    () => setCounter(counter + 1),
+    1000
+  )
+
+  return (
+    <div>{counter}</div>
+  )
+}
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+)
+```
+
+`useState`
+
+- adds state to the component
+- returns a state variable and a function to _modify_ the state variable's value
+- the initial value is the input of the `useState` function
+- can update state instead to re-render the page
+
+```
+const [ counter, setCounter ] = useState(0)
+
+setTimeout(
+  () => setCounter(counter + 1),
+  1000
+)
+```
+
+- use `console` to help debug and see whats going on if things do not happen when you think they should
+
+```
+const App = () => {
+  const [ counter, setCounter ] = useState(0)
+
+  setTimeout(
+    () => setCounter(counter + 1),
+    1000
+  )
+
+  console.log('rendering...', counter)
+
+  return (
+    <div>{counter}</div>
+  )
+}
+```
+
+## Event Handling
+
+- called when specific events occur (ex. user interaction)
+  - on click
+  - input
+
+```
+const App = () => {
+  const [ counter, setCounter ] = useState(0)
+
+  const handleClick = () => {
+    console.log('clicked')
+  }
+
+  return (
+    <div>
+      <div>{counter}</div>
+      <button onClick={handleClick}>
+        plus
+      </button>
+    </div>
+  )
+}
+```
+
+- can be used to cause page re-rendering
+
+```const App = () => {
+  const [ counter, setCounter ] = useState(0)
+
+  return (
+    <div>
+      <div>{counter}</div>
+      <button onClick={() => setCounter(counter + 1)}>
+        plus
+      </button>
+      <button onClick={() => setCounter(0)}>
+        zero
+      </button>
+    </div>
+  )
+}
+```
+
+## Event Handler is a Function
+
+```
+<button onClick={() => setCounter(counter + 1)}>
+  plus
+</button>
+```
+
+VS.
+
+```
+<button onClick={setCounter(counter + 1)}>
+  plus
+</button>
+```
+
+- event handlers are function calls
+- need to be cautious over use to ensure pages are only re-rendered when desired
+
+```
+const App = () => {
+  const [ counter, setCounter ] = useState(0)
+
+  const increaseByOne = () => setCounter(counter + 1)
+
+  const setToZero = () => setCounter(0)
+
+  return (
+    <div>
+      <div>{counter}</div>
+      <button onClick={increaseByOne}>
+        plus
+      </button>
+      <button onClick={setToZero}>
+        zero
+      </button>
+    </div>
+  )
+}
+```
+
+## Passing State to Child Components
+
+- write React components that are small and reusable across the application and even across projects
+- best practice in React is to lift the state up in the component hierarchy
+
+_Often, several components need to reflect the same changing data. We recommend lifting the shared state up to their closest common ancestor._
+
+```
+const Display = (props) => {
+  return (
+    <div>{props.counter}</div>
+  )
+}
+
+const Button = (props) => {
+  return (
+    <button onClick={props.handleClick}>
+      {props.text}
+    </button>
+  )
+}
+
+  const [ counter, setCounter ] = useState(0)
+
+  const increaseByOne = () => setCounter(counter + 1)
+  const decreaseByOne = () => setCounter(counter - 1)
+  const setToZero = () => setCounter(0)
+
+  return (
+    <div>
+      <Display counter={counter}/>
+      <Button
+        handleClick={increaseByOne}
+        text='plus'
+      />
+      <Button
+        handleClick={setToZero}
+        text='zero'
+      />
+      <Button
+        handleClick={decreaseByOne}
+        text='minus'
+      />
+    </div>
+  )
+}
+```
+
+- naming convention suggestion to use `handleClick` -> not required
+
+## Changes in State Cause Re-rendering
+
+## Refactoring Components
+
+```
+const Display = (props) => {
+  return (
+    <div>{props.counter}</div>
+  )
+}
+
+const Button = (props) => {
+  return (
+    <button onClick={props.handleClick}>
+      {props.text}
+    </button>
+  )
+}
+```
+
+- use `destructuring`
+
+```
+const Display = ({ counter }) => {
+  return (
+    <div>{counter}</div>
+  )
+}
+
+const Button = ({ handleClick, text }) => (
+  <button onClick={handleClick}>
+    {text}
+  </button>
+)
+```
+
+- use `compact arrow functions`
+
+```
+const Display = ({ counter }) => <div>{counter}</div>
 ```
