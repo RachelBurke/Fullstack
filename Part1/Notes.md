@@ -749,6 +749,10 @@ const Button = (props) => {
 
 ## Changes in State Cause Re-rendering
 
+- Calling a function which changes the state causes the component to re-render
+- State changes can be triggered with event handlers
+- State changes in a parent can cause child components to re-render
+
 ## Refactoring Components
 
 ```
@@ -788,3 +792,262 @@ const Button = ({ handleClick, text }) => (
 ```
 const Display = ({ counter }) => <div>{counter}</div>
 ```
+
+# Part 1 D: A More Complex State, Debugging React Apps
+
+## Complex State
+
+```
+  const [clicks, setClicks] = useState({
+    left: 0, right: 0
+  })
+
+  const handleLeftClick = () => {
+    const newClicks = {
+      left: clicks.left + 1,
+      right: clicks.right
+    }
+    setClicks(newClicks)
+  }
+
+  const handleRightClick = () => {
+    const newClicks = {
+      left: clicks.left,
+      right: clicks.right + 1
+    }
+    setClicks(newClicks)
+  }
+
+  return (
+    <div>
+      <div>
+        {clicks.left}
+        <button onClick={handleLeftClick}>left</button>
+        <button onClick={handleRightClick}>right</button>
+        {clicks.right}
+      </div>
+    </div>
+  )
+}
+```
+
+- forces event handlers to take care of changing entire application state
+- can be messier
+- but theres [object spread syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)!
+
+```
+{ ...clicks, right: clicks.right + 1 }
+```
+
+- this creates a copy of the `clicks` object, with the `right` property increased by 1
+
+- **NEVER EVER MUTATE STATE DIRECTLY**
+
+## Handling Arrays
+
+- use `concat` not `push` when handling state arrays
+- never mutate directly
+
+## Conditional Rendering
+
+```
+const History = (props) => {
+  if (props.allClicks.length === 0) {
+    return (
+      <div>
+        the app is used by pressing the buttons
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      button press history: {props.allClicks.join(' ')}
+    </div>
+  )
+}
+
+const App = (props) => {
+  // ...
+
+  return (
+    <div>
+      <div>
+        {left}
+        <button onClick={handleLeftClick}>left</button>
+        <button onClick={handleRightClick}>right</button>
+        {right}
+        <History allClicks={allClicks} />
+      </div>
+    </div>
+  )
+}
+```
+
+- [conditional rendering](https://reactjs.org/docs/conditional-rendering.html) - completely different renderings of React elements depending on the state of the application
+
+## Old React
+
+- pre-hooks there was no way to add to state to functional components
+- uses class syntax
+
+## Debugging React Applications
+
+- Install [React DeveloperTools extension](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi) to Chrome and use the `Components` tab for inspecting React elements in the application and their state and props
+
+### The First Rule of Web Development
+
+**Keep the browser's developer console open at all times.**
+
+The _Console_ tab in particular should always be open, unless there is a specific reason to view another tab.
+
+Keep both your code and the web page open together **at the same time, all the time.**
+
+## Rules of Hooks
+
+- **do not** call `useState` or `useEffect` in loops, conditional expression, or outside a function defining a component
+- hooks may only be called from the inside of a function body that defines a React component
+
+## Event Handling Revisited
+
+- make sure event handlers are _function calls_
+- use the console to help debug errors
+- can pass references to functions to event handlers
+
+## Function that Returns a Function
+
+- can use to set event handlers to function calls
+
+```
+const App = (props) => {
+  const [value, setValue] = useState(10)
+
+  const hello = () => {
+    const handler = () => console.log('hello world')
+    return handler
+  }
+
+  return (
+    <div>
+      {value}
+      <button onClick={hello()}>button</button>
+    </div>
+  )
+}
+```
+
+- this is the same as doing
+
+```
+const hello = () => {
+  const handler = () => console.log('hello world')
+
+  return handler
+}
+```
+
+- allows for reusable functions
+
+```
+const App = (props) => {
+  const [value, setValue] = useState(10)
+
+  const hello = (who) => {
+    const handler = () => {
+      console.log('hello', who)
+    }
+    return handler
+  }
+
+  return (
+    <div>
+      {value}
+      <button onClick={hello('world')}>button</button>
+      <button onClick={hello('react')}>button</button>
+      <button onClick={hello('function')}>button</button>
+    </div>
+  )
+}
+```
+
+- can be written compactly
+
+```
+const hello = (who) => () => {
+  console.log('hello', who)
+}
+```
+
+- allows versatility
+
+```
+const App = (props) => {
+  const [value, setValue] = useState(10)
+
+  const setToValue = (newValue) => {
+    setValue(newValue)
+  }
+
+  return (
+    <div>
+      {value}
+      <button onClick={() => setToValue(1000)}>
+        thousand
+      </button>
+      <button onClick={() => setToValue(0)}>
+        reset
+      </button>
+      <button onClick={() => setToValue(value + 1)}>
+        increment
+      </button>
+    </div>
+  )
+}
+```
+
+- using them is optional, just a preference thing
+
+## Passing Event Handlers to Child Components
+
+- make sure you use correct attribute names when passing props to the child components
+
+## Do NOT Define Components Within Components
+
+```
+// This is the right place to define a component
+const Button = (props) => (
+  <button onClick={props.handleClick}>
+    {props.text}
+  </button>
+)
+
+const App = props => {
+  const [value, setValue] = useState(10)
+
+  const setToValue = newValue => {
+    setValue(newValue)
+  }
+
+  // Do not define components inside another component
+  const Display = props => <div>{props.value}</div>
+
+  return (
+    <div>
+      <Display value={value} />
+      <Button handleClick={() => setToValue(1000)} text="thousand" />
+      <Button handleClick={() => setToValue(0)} text="reset" />
+      <Button handleClick={() => setToValue(value + 1)} text="increment" />
+    </div>
+  )
+}
+```
+
+- React treats a component defined inside of another component as a new component in every render
+- impossible to React to optimize the component
+
+## Useful Reading
+
+- [React Official Documentation](https://reactjs.org/docs/hello-world.html)
+- [Egghead.io](https://egghead.io)
+- [Start learning React](https://egghead.io/courses/start-learning-react)
+- [The Beginner's Guide to React](https://egghead.io/courses/the-beginner-s-guide-to-reactjs)
