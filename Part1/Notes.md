@@ -145,4 +145,239 @@ const App = () => {
 - React component names must be capitalized
 - Can use empty elements `<>` to wrap multiple React components and elements together at root
 
-# Part 1 B:
+# Part 1 B: JavaScript
+
+- official name of the JavaScript standard is ECMAScript
+- latest version released in June of 2019 (ES10)
+- browsers don't always support all of JS functionality
+- code run in browsers _transpiled_ to newer version
+  - `create-react-app` and `Babel` handle this
+- [Node.js](https://nodejs.org/en/) - JS runtime environment
+- can be written in the browser developer console
+
+## Variables
+
+```
+const x = 1
+let y = 5
+
+console.log(x, y)   // 1, 5 are printed
+y += 10
+console.log(x, y)   // 1, 15 are printed
+y = 'sometext'
+console.log(x, y)   // 1, sometext are printed
+x = 4               // causes an error
+```
+
+- **const** - constant
+- ** let** - changeable variable
+
+## Arrays
+
+```
+const t = [1, -1, 3]
+
+t.push(5)
+
+console.log(t.length) // 4 is printed
+console.log(t[1])     // -1 is printed
+
+t.forEach(value => {
+  console.log(value)  // numbers 1, -1, 3, 5 are printed, each to own line
+})
+```
+
+- can be modified even when declared as `const` using functions for `Arrays`
+  - forEach
+  - split
+  - push (adds element)
+  - concat (returns a new array with both old and new items))
+  - map (creates new array based on function return)
+
+```
+const t = [1, 2, 3, 4, 5]
+
+const [first, second, ...rest] = t
+
+console.log(first, second)  // 1, 2 is printed
+console.log(rest)
+```
+
+- can be destructured using `...`
+- variables first and second will receive the first two integers of the array as their values
+- remaining integers are "collected" into an array of their own which is then assigned to the variable rest
+
+## Objects
+
+- object literals use `{}`
+
+```
+const object1 = {
+  name: 'Arto Hellas',
+  age: 35,
+  education: 'PhD',
+}
+
+const object2 = {
+  name: 'Full Stack web application development',
+  level: 'intermediate studies',
+  size: 5,
+}
+
+const object3 = {
+  name: {
+    first: 'Dan',
+    last: 'Abramov',
+  },
+  grades: [2, 3, 5, 3],
+  department: 'Stanford University',
+}
+```
+
+- property values can be of any type
+
+```
+console.log(object1.name)         // Arto Hellas is printed
+const fieldName = 'age'
+console.log(object1[fieldName])    // 35 is printed
+```
+
+- properties referenced using `.` or `[]` notation
+- properties can be added at any time using `.` or `[]` notation
+
+## Functions
+
+**Arrow Functions:**
+
+```
+const sum = (p1, p2) => {
+  console.log(p1)
+  console.log(p2)
+  return p1 + p2
+}
+
+const result = sum(1, 5)
+console.log(result)
+
+const square = p => {
+  console.log(p)
+  return p * p
+}
+
+const square = p => p * p
+
+const t = [1, 2, 3]
+const tSquared = t.map(p => p * p)
+// tSquared is now [1, 4, 9]
+```
+
+**Function Declarations**
+
+```
+function product(a, b) {
+  return a * b
+}
+
+const result = product(2, 6)
+// result is now 12
+```
+
+**Function Expressions**
+
+```
+const average = function(a, b) {
+  return (a + b) / 2
+}
+
+const result = average(2, 5)
+// result is now 3.5
+```
+
+## Object methods and "this"
+
+- `this` (the object itself)
+  - Arrow functions and functions defined using the `function` keyword vary substantially when it comes to how they behave with respect to the keyword this
+- assign methods to an object by defining function properties
+
+```
+
+const arto = {
+name: 'Arto Hellas',
+age: 35,
+education: 'PhD',
+greet: function() {
+console.log('hello, my name is ' + this.name)
+},
+}
+
+arto.greet() // "hello, my name is Arto Hellas" gets printed
+
+```
+
+- assign methods to objects after object creation
+
+```
+
+const arto = {
+name: 'Arto Hellas',
+age: 35,
+education: 'PhD',
+greet: function() {
+console.log('hello, my name is ' + this.name)
+},
+}
+
+arto.growOlder = function() {
+this.age += 1
+}
+
+console.log(arto.age) // 35 is printed
+arto.growOlder()
+console.log(arto.age) // 36 is printed
+
+```
+
+- the value of [this](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this) is defined based on _how the method is called_
+- when calling methods through a reference, the value of `this` becomes the [global-object](https://developer.mozilla.org/en-US/docs/Glossary/Global_object)
+- can avoid problems by using "this-less" JS
+- timeouts can cause `this` to "disappear"
+- can preserve `this` using a method called `bind` (tells where to point `this`)
+
+## Classes
+
+```
+
+class Person {
+constructor(name, age) {
+this.name = name
+this.age = age
+}
+greet() {
+console.log('hello, my name is ' + this.name)
+}
+}
+
+const adam = new Person('Adam Ondra', 35)
+adam.greet()
+
+const janja = new Person('Janja Garnbret', 22)
+janja.greet()
+
+```
+
+- there is no class mechanism like in OOP
+- can "simulate" object-oriented classes in JS
+- `class` was introduced in ES6 to simplify simulating class definitions in JS
+- "classes" in JS are reminiscent of Java and behave quite similarly to Java
+- ES6 class syntax is used a lot in **"old" React**
+- Instead of classes we are using the new **Hooks** feature of React
+
+## JavaScript materials
+
+- [Mozilla's JavaScript Guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [A re-introduction to JavaScript (JS Tutorial)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript)
+- [You-Dont-Know-JS](https://github.com/getify/You-Dont-Know-JS)
+
+```
+
+```
