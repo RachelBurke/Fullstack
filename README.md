@@ -30,4 +30,4 @@ Fullstack development course from https://fullstackopen.com/en/
     - [Exercise 1.12](/Part1/Exercise1.12.md)
     - [Exercise 1.13](/Part1/Exercise1.13.md)
     - [Exercise 1.14](/Part1/Exercise1.14.md)
-    - [Exercise 1.12-1.14](/Part1/anecdotes_exercises12-14)
+    - [Exercise 1.12-1.14 Code](/Part1/anecdotes_exercises12-14)
