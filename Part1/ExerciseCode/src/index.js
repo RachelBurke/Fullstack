@@ -7,13 +7,19 @@ const Header = ({ course }) => {
 
 const Content = ({ parts, exercises }) => {
   return (
-    <>
+    <div>
       {parts.map((part, index) => (
-        <p>
-          {part} {exercises[index]}
-        </p>
+        <Part part={part} exercises={exercises[index]} />
       ))}
-    </>
+    </div>
+  );
+};
+
+const Part = ({ part, exercises }) => {
+  return (
+    <p>
+      {part} {exercises}
+    </p>
   );
 };
 
