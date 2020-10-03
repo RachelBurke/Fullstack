@@ -8,7 +8,7 @@ Create a diagram depicting the situation where the user goes to the [single page
 
 ## Solution
 
-![](Exercise5.PNG)
+![](../Exercise5.PNG)
 
 Solution Code:
 

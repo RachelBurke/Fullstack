@@ -8,7 +8,7 @@ This was the last exercise, and it's time to push your answers to GitHub and mar
 
 ## Solution
 
-![](Exercise6.PNG)
+![](../Exercise6.PNG)
 
 Solution Code:
 

@@ -14,7 +14,7 @@ All necessary information for doing this, and the next two exercises, can be fou
 
 ## Solution
 
-![](Exercise4.PNG)
+![](../Exercise4.PNG)
 
 Solution Code:
 
